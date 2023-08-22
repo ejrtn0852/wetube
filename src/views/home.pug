@@ -2,4 +2,9 @@ extends base.pug
 
 
 block content 
-    h1  Home!!! 
+    h2  Welcome to Video World
+    ul
+        each item  in videos
+            li #{item}
+        else 
+            li Sorry nothing found
