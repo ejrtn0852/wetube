@@ -14,7 +14,7 @@ app.use(loggerMiddleware);
 
 app.use("/", globalRouter);
 app.use("/video", videoRouter);
-app.use("/user", userRouter);
+app.use("/users", userRouter);
 
 const PORT = 4000;
 
