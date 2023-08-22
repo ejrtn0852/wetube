@@ -1,9 +1,9 @@
 import express from "express";
+import {edit} from "../controller/userController"
 
 const userRouter = express.Router();
 
-const handleEditUser = (req,res) => res.send("Edit User")
 
-userRouter.get("/edit", handleEditUser);
+userRouter.get("/edit", edit);
 
 export default  userRouter;
