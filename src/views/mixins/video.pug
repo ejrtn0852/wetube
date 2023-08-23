@@ -1,0 +1,8 @@
+mixin video(item)
+    div 
+        h5=item.title 
+        ul 
+            li #{item.rating}/5
+            li #{item.commnet} comments 
+            li Posted #{item.createdAt}
+            li #{item.views} views.
