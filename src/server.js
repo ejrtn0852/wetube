@@ -24,4 +24,3 @@ const handleListening = () => {
 
 app.listen(PORT, handleListening);
 
-// 2분 24초 4.2 부터 보면 돼
