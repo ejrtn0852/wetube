@@ -2,4 +2,9 @@ extends base.pug
 
 
 block content 
-    h1  Watch!!! 
+    h1  #{video.title}
+    a(href=`${video.id}/edit`) Edit Video &larr; 
+    h4  rating:#{video.rating}
+    h4  comments: #{video.comments}
+    h4  createdAt: #{video.createdAt}
+    h4  view : #{video.views} #{video.views === 1 ? "view" : "views"}
