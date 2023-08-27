@@ -7,10 +7,13 @@ html(lang="en")
         title #{pageTitle} | Wetube
     body 
         header 
+            h1=pageTitle
             nav 
                 ul 
                     li 
-                            a(href="/login") Login        
+                            a(href="/") HOME
+                    li 
+                            a(href="video/upload") Upload Video  
                         
     main 
         block content

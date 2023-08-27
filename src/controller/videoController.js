@@ -22,7 +22,8 @@ const videos = [
         createdAt: "2 minutes ago",
         views: 105,
         id: 3,
-    },     
+    },
+    
 ];
 
 
@@ -40,5 +41,27 @@ export const getEdit = (req, res) => {
     return res.render("edit", {pageTitle: `Editing: ${video.title}`,video});
 }
 export const postEdit = (req,res) => {
-    return res.redirect();
+    const { id } = req.params;
+    const { title } = req.body;
+    const { rating } = req.body;
+    videos[id-1].rating = rating;
+    videos[id -1].title = title;
+    return res.redirect(`/video/${id}`);
 };
+
+export const getVideo = (req,res) => res.render("upload", {pageTitle:`Upload Video`});
+
+export const postUpload = (req,res) => {
+    const { title } = req.body;
+    const newVideos = 
+        {
+            title,
+            rating : 0,
+            comments : 0,
+            createdAt: "1 minutes ago",
+            views: 0,
+            id: videos.length+1,
+        }
+        videos.push(newVideos);
+    return res.redirect("/");
+}

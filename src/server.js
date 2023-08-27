@@ -6,12 +6,13 @@ import videoRouter from "./routers/videoRouter";
 
 
 const app = express();
-const loggerMiddleware = morgan("dev");
+const logger = morgan("dev");
 
 
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views"); 
-app.use(loggerMiddleware);
+app.use(logger);
+app.use(express.urlencoded({ extended: true }));
 app.use("/", globalRouter);
 app.use("/video", videoRouter);
 app.use("/users", userRouter);
