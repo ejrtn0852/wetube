@@ -1,14 +1,14 @@
 import express from "express";
-import {see,edit,upload,deleteVideo, watch} from "../controller/videoController";
+import {postEdit,getEdit,watch} from "../controller/videoController";
 
 
 
 const videoRouter = express.Router();
 
-videoRouter.get("/upload", upload);
+
 videoRouter.get("/:id(\\d+)", watch);
-videoRouter.get("/:id(\\d+)/edit", edit);
-videoRouter.get("/:id(\\d+)/delete", deleteVideo);
+videoRouter.route("/:id(\\d+)/edit").get(getEdit).post(postEdit);
+
 // /:id 가 먼저오면 all :id 됨 
 
 
