@@ -1,4 +1,5 @@
-
+import "./db";
+import "./models/Video";
 import express, { Router } from "express";
 import morgan from "morgan";
 import globalRouter from "./routers/globalRouter";
