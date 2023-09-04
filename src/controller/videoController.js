@@ -1,7 +1,9 @@
 import Video from "../models/Video";
 
-export const trending = (req, res) => {
-  return res.render("home", { pageTitle: "home" });
+export const trending = async (req, res) => {
+  const videos = await Video.find({});
+  console.log(videos);
+  return res.render("home", { pageTitle: "home", videos });
 };
 export const watch = (req, res) => {
   const { id } = req.params;
