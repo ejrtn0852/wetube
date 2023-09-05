@@ -1,7 +1,10 @@
 extends base.pug
 
 block content 
-    h3 hello from upload!
-    form(method="POST" action="/video/upload")
-        input(type="text" name="title" placeholder="videoTitle" required)
+    if errorMessage 
+        span=errorMessage
+    form(method="POST")
+        input(type="text" name="title" placeholder="videoTitle")
+        input(type="text" name="description" placeholder="descripton" required)
+        input(type="text" name="hashtags" placeholder="hashtag" required)
         input(value="upload!!",type="submit")

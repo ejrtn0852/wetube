@@ -1,10 +1,10 @@
 extends base.pug
 
-
 block content 
-    h1  #{video.title}
-    a(href=`${video.id}/edit`) Edit Video &larr; 
-    h4  rating:#{video.rating}
-    h4  comments: #{video.comments}
-    h4  createdAt: #{video.createdAt}
-    h4  view : #{video.views} #{video.views === 1 ? "view" : "views"}
+    p=video.description
+    p=video.hashtags
+    small=video.createdAt
+    <br>
+    a(href=`${video.id}/edit`) Edit Video &larr;
+    <br>
+    a(href=`${video.id}/delete`) Delete Video &larr;     
