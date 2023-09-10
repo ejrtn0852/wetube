@@ -7,18 +7,25 @@ html(lang="en")
         title #{pageTitle} | Wetube
     body 
         header 
-            h1=pageTitle
+            h1=pageTitle 
             nav 
                 ul 
                     li 
                             a(href="/") HOME
-                    
-                    li                          
-                            a(href="video/upload") Upload Video  
                     li 
-                            a(href="/search") Serach    
-                    li 
+                            a(href="/search") Serach
+                    if loggedIn
+                        li 
+                            a(href="/logout") logout
+                        li 
+                            a(href="/my-profile") #{loggedInUser.name}의 Profile 
+                    else      
+                        li 
                             a(href="/join") Join Now 
+                        li 
+                            a(href="/login") login 
+                    li                          
+                            a(href="video/upload") Upload Video              
     main 
         block content
     footer 
