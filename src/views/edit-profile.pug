@@ -1,0 +1,9 @@
+extends base.pug
+
+block content 
+    form(method="POST") 
+        input(placeholder="name", type="text", name="name", value=loggedInUser.name required)
+        input(placeholder="user name", type="text", name="username",  required)
+        input(placeholder="email", type="email", name="email",  required)    
+        input(placeholder="location", type="text", name="location",  required)
+        input(type="submit" value="수정하기") 
