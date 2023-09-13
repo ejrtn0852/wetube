@@ -48,7 +48,7 @@ export const getLogin = (req, res) => {
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
     const pageTitle = "login";
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username, socialOny: false });
     if (!user) {
         return res.status(400).render("login", {
             pageTitle,
@@ -96,7 +96,6 @@ export const finishGithubLogin = async (req, res) => {
             },
         })
     ).json();
-    console.log(tokenRequest);
     if ("access_token" in tokenRequest) {
         const { access_token } = tokenRequest;
         const apiUrl = "https://api.github.com";
@@ -107,6 +106,7 @@ export const finishGithubLogin = async (req, res) => {
                 },
             })
         ).json();
+        console.log(userData);
         const emailData = await (
             await fetch(`${apiUrl}/user/emails`, {
                 headers: {
@@ -114,19 +114,18 @@ export const finishGithubLogin = async (req, res) => {
                 },
             })
         ).json();
+        console.log(emailData);
         const emailObj = emailData.find(
             (email) => email.primary === true && email.verified === true
         );
         if (!emailObj) {
             return res.redirect("/login");
         }
-        const existingUser = await User.findOne({ email: emailObj.email });
-        if (existingUser) {
-            req.session.loggedIn = true;
-            req.session.user = existingUser;
-            return res.redirect("/");
-        } else {
+        let user = await User.findOne({ email: emailObj.email });
+        // DB애 저장된 Email과 깃헙에서 받은 이메일이 같은 것을 반환
+        if (!user) {
             const user = await User.create({
+                avatarUrl: userData.avatar_url,
                 name: userData.name,
                 username: userData.login,
                 email: emailObj.email,
@@ -134,22 +133,28 @@ export const finishGithubLogin = async (req, res) => {
                 socialOny: true,
                 location: userData.location,
             });
-            req.session.loggedIn = true;
-            req.session.user = user;
-            return res.redirect("/");
         }
+        req.session.loggedIn = true;
+        req.session.user = user;
+        return res.redirect("/");
     } else {
         return res.redirect("/login");
     }
 };
 
-export const startKakaoLogin = (req, res) => {
-    const REST_API_KEY = process.env.KaKo_ClIENT;
-    const REDIRECT_URI = "http://localhost:4000/login";
-    const baseURL = "https://kauth.kakao.com/oauth/authorize";
+export const logout = (req, res) => {
+    req.session.destroy();
+    return res.redirect("/");
 };
 
-export const edit = (req, res) => res.send("user!");
+export const getEdit = (req, res) => {
+    return res.render("edit-profile", {
+        pageTitle: "Edit",
+    });
+};
+
+export const postEdit = (req, res) => {
+    return res.render("edit-profile");
+};
 export const remove = (req, res) => res.send("delete!");
-export const logout = (req, res) => res.send("logout!");
 export const see = (req, res) => res.send("see");

@@ -16,7 +16,9 @@ html(lang="en")
                             a(href="/search") Serach
                     if loggedIn
                         li 
-                            a(href="/logout") logout
+                            a(href="users/edit") Edit-Profile 
+                        li 
+                            a(href="users/logout") logout
                         li 
                             a(href="/my-profile") #{loggedInUser.name}의 Profile 
                     else      
