@@ -106,7 +106,6 @@ export const finishGithubLogin = async (req, res) => {
                 },
             })
         ).json();
-        console.log(userData);
         const emailData = await (
             await fetch(`${apiUrl}/user/emails`, {
                 headers: {
@@ -114,7 +113,6 @@ export const finishGithubLogin = async (req, res) => {
                 },
             })
         ).json();
-        console.log(emailData);
         const emailObj = emailData.find(
             (email) => email.primary === true && email.verified === true
         );
@@ -148,13 +146,37 @@ export const logout = (req, res) => {
 };
 
 export const getEdit = (req, res) => {
-    return res.render("edit-profile", {
-        pageTitle: "Edit",
-    });
+    return res.render("edit-profile");
 };
 
-export const postEdit = (req, res) => {
-    return res.render("edit-profile");
+export const postEdit = async (req, res) => {
+    const { name, email, username, location } = req.body;
+    const {
+        session: {
+            user: { _id },
+        },
+    } = req;
+
+    if (req.session.user.email !== email) {
+        const updateUser = await User.findByIdAndUpdate(
+            _id,
+            {
+                name,
+                email,
+                username,
+                location,
+            },
+            { new: true }
+        );
+        req.session.user = updateUser;
+        return res.redirect("/");
+    } else {
+        return res.status(400).render("edit-profile", {
+            errorMessage: "This email is already taken",
+        });
+    }
+
+    return res.redirect("edit");
 };
 export const remove = (req, res) => res.send("delete!");
 export const see = (req, res) => res.send("see");

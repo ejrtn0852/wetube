@@ -15,6 +15,8 @@ html(lang="en")
                     li 
                             a(href="/search") Serach
                     if loggedIn
+                        li                          
+                            a(href="video/upload") Upload Video      
                         li 
                             a(href="users/edit") Edit-Profile 
                         li 
@@ -25,9 +27,7 @@ html(lang="en")
                         li 
                             a(href="/join") Join Now 
                         li 
-                            a(href="/login") login 
-                    li                          
-                            a(href="video/upload") Upload Video              
+                            a(href="/login") login         
     main 
         block content
     footer 
