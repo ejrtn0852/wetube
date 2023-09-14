@@ -48,7 +48,7 @@ export const getLogin = (req, res) => {
 export const postLogin = async (req, res) => {
     const { username, password } = req.body;
     const pageTitle = "login";
-    const user = await User.findOne({ username, socialOny: false });
+    const user = await User.findOne({ username, socialOnly: false });
     if (!user) {
         return res.status(400).render("login", {
             pageTitle,
@@ -128,7 +128,7 @@ export const finishGithubLogin = async (req, res) => {
                 username: userData.login,
                 email: emailObj.email,
                 password: "",
-                socialOny: true,
+                socialOnly: true,
                 location: userData.location,
             });
         }
@@ -153,30 +153,83 @@ export const postEdit = async (req, res) => {
     const { name, email, username, location } = req.body;
     const {
         session: {
-            user: { _id },
+            user: { _id, email: sessionEmail, name: sessionName },
         },
     } = req;
+    // const dbSearchId = await User.find(
+    //     {
+    //         _id: { $ne: _id },
+    //     },
+    //     "email"
+    // );
+    // 현재 로그인한 id값과 다른 id값을 찾아옴
+    // const emailList = dbSearchId.map((item) => item.email);
+    // input으로 입력한 사용자 이메일과 db에 저장된 이메일이 같다면 status400 + redirect하려고 했는데 몽고 자체에서 막아줌
+    // 그래서 원래 자기가 가지고 있던 값을 중복으로 변경하려할때만 막아줌
+    // 생각해보니 스키마에 unquie 처리가 되어있으면 컬렉션안에 고유 값이 되어서 이 값이 중복으로 들어오게되면 mongo에서 막아주는거임
 
-    if (req.session.user.email !== email) {
-        const updateUser = await User.findByIdAndUpdate(
-            _id,
-            {
-                name,
-                email,
-                username,
-                location,
-            },
-            { new: true }
-        );
-        req.session.user = updateUser;
-        return res.redirect("/");
-    } else {
+    try {
+        if (sessionEmail !== email && sessionName !== name) {
+            const updateUser = await User.findByIdAndUpdate(
+                _id,
+                {
+                    name,
+                    email,
+                    username,
+                    location,
+                },
+                { new: true }
+            );
+            req.session.user = updateUser;
+            return res.redirect("/");
+        }
+    } catch (error) {
+        console.log(error);
         return res.status(400).render("edit-profile", {
-            errorMessage: "This email is already taken",
+            errorMessage:
+                "이미 등록된 이메일/닉네임 입니다. 다시 입력해주세요. 아직 서비스 미구현으로 이름과 이메일을 무조건 바꿔주셔야합니다.",
         });
     }
-
-    return res.redirect("edit");
 };
-export const remove = (req, res) => res.send("delete!");
+
+export const getChangePassword = (req, res) => {
+    console.log(req.session.user.socialOny);
+    if (req.session.user.socialOny === true) {
+        return res.redirect("/");
+    }
+    return res.render("users/change-password", {
+        pageTitle: "change Password!",
+    });
+};
+
+export const postChangePassword = async (req, res) => {
+    const {
+        session: {
+            user: { _id, password },
+        },
+        body: { confirmation, newPassword, oldPassword },
+    } = req;
+    console.log(newPassword, confirmation);
+    const ok = await bcrypt.compare(oldPassword, password);
+    if (!ok) {
+        return res.status(400).render("users/change-password", {
+            pageTitle: "Change Password",
+            errorMessage: "The current password is incorrect ",
+        });
+    }
+    if (newPassword !== confirmation) {
+        return res.status(400).render("users/change-password", {
+            pageTitle: "Change Password",
+            errorMessage: "new password does not match the Confirmation ",
+        });
+    }
+    const user = await User.findById(_id);
+    user.password = newPassword;
+    console.log(user.password);
+    await user.save();
+    console.log(user.password);
+
+    return res.redirect("/");
+};
+
 export const see = (req, res) => res.send("see");
