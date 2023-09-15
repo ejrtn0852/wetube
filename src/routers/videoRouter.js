@@ -8,7 +8,10 @@ import {
     deleteVideo,
 } from "../controller/videoController";
 
-import { protectorMiddleware } from "../middlewares.js/middlewares";
+import {
+    protectorMiddleware,
+    videoUpload,
+} from "../middlewares.js/middlewares";
 
 const videoRouter = express.Router();
 
@@ -26,7 +29,7 @@ videoRouter
     .route("/upload")
     .all(protectorMiddleware)
     .get(getVideo)
-    .post(postUpload);
+    .post(videoUpload.single("video"), postUpload);
 
 // /:id 가 먼저오면 all :id 됨
 

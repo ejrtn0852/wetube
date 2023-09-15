@@ -1,6 +1,7 @@
 import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import multer from "multer";
 
 export const getJoin = (req, res) => {
     console.log(req.body);
@@ -150,12 +151,15 @@ export const getEdit = (req, res) => {
 };
 
 export const postEdit = async (req, res) => {
-    const { name, email, username, location } = req.body;
     const {
         session: {
-            user: { _id, email: sessionEmail, name: sessionName },
+            user: { _id, avatarUrl, email: sessionEmail, name: sessionName },
         },
+        body: { name, email, username, location },
+        file,
     } = req;
+    console.log(file);
+    console.log(avatarUrl);
     // const dbSearchId = await User.find(
     //     {
     //         _id: { $ne: _id },
@@ -173,6 +177,7 @@ export const postEdit = async (req, res) => {
             const updateUser = await User.findByIdAndUpdate(
                 _id,
                 {
+                    avatarUrl: file ? file.path : avatarUrl,
                     name,
                     email,
                     username,
@@ -188,6 +193,7 @@ export const postEdit = async (req, res) => {
         return res.status(400).render("edit-profile", {
             errorMessage:
                 "이미 등록된 이메일/닉네임 입니다. 다시 입력해주세요. 아직 서비스 미구현으로 이름과 이메일을 무조건 바꿔주셔야합니다.",
+            avatarError: error,
         });
     }
 };
@@ -209,7 +215,6 @@ export const postChangePassword = async (req, res) => {
         },
         body: { confirmation, newPassword, oldPassword },
     } = req;
-    console.log(newPassword, confirmation);
     const ok = await bcrypt.compare(oldPassword, password);
     if (!ok) {
         return res.status(400).render("users/change-password", {
@@ -225,11 +230,19 @@ export const postChangePassword = async (req, res) => {
     }
     const user = await User.findById(_id);
     user.password = newPassword;
-    console.log(user.password);
     await user.save();
-    console.log(user.password);
-
+    req.session.user.password = user.password;
     return res.redirect("/");
 };
 
-export const see = (req, res) => res.send("see");
+export const see = async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+        return res.status(400).render("404", { pageTitle: "User not found." });
+    }
+    return res.render("users/profile", {
+        pageTitle: user.name,
+        user,
+    });
+};

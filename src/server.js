@@ -7,7 +7,11 @@ import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
-import { localsMiddleware, timeMiddleware } from "./middlewares.js/middlewares";
+import {
+    localsMiddleware,
+    timeMiddleware,
+    uploadFiles,
+} from "./middlewares.js/middlewares";
 
 const app = express();
 const logger = morgan("dev");
@@ -29,6 +33,7 @@ app.use(
     })
 );
 app.use(localsMiddleware);
+app.use("/uploads", express.static("uploads"));
 app.use("/", rootRouter);
 app.use("/video", videoRouter);
 app.use("/users", userRouter);
