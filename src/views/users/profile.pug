@@ -1,2 +1,6 @@
 extends ../base.pug
+include ../mixins/video
 
+block content 
+    each item  in user.videos
+            +video(item)
