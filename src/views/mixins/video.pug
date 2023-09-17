@@ -1,7 +1,8 @@
 mixin video(item)
-    div 
-        h4 
-            a(href=`/video/${item.id}`)=item.title 
-        p=item.description
-        small=item.createdAt
+    div
+        ul 
+            li 
+                a(href=`/video/${item.id}`)=item.title 
+            li=item.description
+            li=item.createdAt
         hr
