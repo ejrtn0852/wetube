@@ -12,6 +12,7 @@ import {
     timeMiddleware,
     uploadFiles,
 } from "./middlewares.js/middlewares";
+import apiRouter from "./routers/apiRouter";
 
 const app = express();
 const logger = morgan("dev");
@@ -38,5 +39,6 @@ app.use("/static", express.static("assets"));
 app.use("/", rootRouter);
 app.use("/video", videoRouter);
 app.use("/users", userRouter);
+app.use("/api", apiRouter);
 
 export default app;
