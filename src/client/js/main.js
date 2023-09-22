@@ -1,2 +1,8 @@
 import "../scss/style.scss";
-console.log("main");
+
+const handleLoading = () => {
+    if (document.readyState) {
+    }
+};
+
+window.addEventListener("load", handleLoading);

@@ -66,7 +66,6 @@ const handleStart = () => {
     actionBtn.innerText = "Recording";
     actionBtn.disabled = true;
     actionBtn.removeEventListener("click", handleStart);
-    actionBtn.addEventListener("click", handleStop);
     recorder = new MediaRecorder(stream);
     recorder.ondataavailable = (event) => {
         videoFile = URL.createObjectURL(event.data);
