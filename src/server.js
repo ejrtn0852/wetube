@@ -10,7 +10,7 @@ import videoRouter from "./routers/videoRouter";
 import {
     localsMiddleware,
     timeMiddleware,
-    uploadFiles,
+    Policy,
 } from "./middlewares.js/middlewares";
 import apiRouter from "./routers/apiRouter";
 
@@ -33,6 +33,7 @@ app.use(
         },
     })
 );
+app.use(Policy);
 app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));
