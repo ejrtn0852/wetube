@@ -15,12 +15,13 @@ let volumeValue = 0.5;
 video.volume = volumeValue;
 
 const handlePlayClick = (e) => {
-    video.paused ? video.play() : video.pause();
+    if (video.pause) {
+        video.play();
+    } else {
+        video.pause();
+    }
     video.paused ? (playBtn.innerText = "play") : (playBtn.innerText = "Pause");
 };
-
-const handlePause = () => (playBtn.innerText = "Play");
-const handlePlay = () => (playBtn.innerText = "Pause");
 
 const handleMute = (e) => {
     if (video.muted) {
@@ -63,10 +64,10 @@ const handleFullScreen = () => {
     const fullScreen = document.fullscreenElement;
     if (fullScreen) {
         document.exitFullscreen();
-        $fullScreen.innerText = "Enter Full Screen⭐️";
+        $fullScreen.innerText = "Enter Full Screen";
     } else {
         videoContainer.requestFullscreen();
-        $fullScreen.innerText = "Exit Full Screen⭐️";
+        $fullScreen.innerText = "Exit Full Screen";
     }
 };
 

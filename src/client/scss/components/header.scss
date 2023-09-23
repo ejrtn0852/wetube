@@ -7,10 +7,9 @@
     }
 }
 
-.load {
-    animation: loadingBar 2s ease-in-out;
+#load {
     display: block;
-    height: 0.5%;
+    height: 1%;
     width: 100vw;
     background-color: red;
 }
