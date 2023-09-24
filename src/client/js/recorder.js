@@ -2,6 +2,7 @@ import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 
 const actionBtn = document.getElementById("startBtn");
 const video = document.getElementById("preview");
+const loadBar = document.getElementById("load");
 
 let stream;
 let recorder;
@@ -83,13 +84,16 @@ const handleStart = () => {
     }, 5000);
 };
 
-const init = (async () => {
+const init = async () => {
     stream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: true,
     });
     video.srcObject = stream;
+    loadBar.style.animation = `loadingBar 3s ease-in-out`;
     video.play();
-})();
+    loadBar.style.display = "none";
+};
 
+document.addEventListener("DOMContentLoaded", init);
 actionBtn.addEventListener("click", handleStart);

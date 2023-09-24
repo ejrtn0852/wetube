@@ -13,11 +13,11 @@ const loadBar = document.getElementById("load");
 
 document.addEventListener("readystatechange", () => {
     const { readyState } = document;
+    console.log(readyState);
     if (readyState === "loading" || readyState === "interactive") {
-        loadBar.style.animation = `loadingBar 1s ease-in-out`;
+        loadBar.style.animation = `loadingBar 5s ease-in-out`;
     }
     if (readyState === "complete") {
         loadBar.style.display = "none";
     }
-    console.log(readyState);
 });
