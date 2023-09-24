@@ -1,7 +1,5 @@
 extends base.pug
 
-
-
 block content 
     div#videoContainer(data-id=video._id)
         video(src="/" + video.fileUrl)
@@ -32,5 +30,6 @@ block content
         a(href=`${video.id}/delete`) Delete Video &larr;     
 
 block scripts 
+    script(src="/static/js/loading.js")
     script( src="/static/js/videoPlayer.js") 
     script( async src="https://kit.fontawesome.com/f2e0cef0ae.js" crossorigin="anonymous")

@@ -12,13 +12,13 @@ const videoControls = document.getElementById("videoControls");
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
 let volumeValue = 0.5;
-video.volume = volumeValue;
 
-const handlePlayClick = (e) => {
+video.volume = volumeValue;
+const handlePlayClick = async () => {
     if (video.pause) {
-        video.play();
+        await video.play();
     } else {
-        video.pause();
+        await video.pause();
     }
     video.paused ? (playBtn.innerText = "play") : (playBtn.innerText = "Pause");
 };

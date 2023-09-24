@@ -90,9 +90,10 @@ const init = async () => {
         video: true,
     });
     video.srcObject = stream;
-    loadBar.style.animation = `loadingBar 3s ease-in-out`;
+    loadBar.classList.add("loading");
     video.play();
-    loadBar.style.display = "none";
+    loadBar.classList.remove("loading");
+    loadBar.classList.add("hidden");
 };
 
 document.addEventListener("DOMContentLoaded", init);

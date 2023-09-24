@@ -15,9 +15,10 @@ document.addEventListener("readystatechange", () => {
     const { readyState } = document;
     console.log(readyState);
     if (readyState === "loading" || readyState === "interactive") {
-        loadBar.style.animation = `loadingBar 5s ease-in-out`;
+        loadBar.classList.add("loading");
     }
     if (readyState === "complete") {
-        loadBar.style.display = "none";
+        loadBar.classList.remove("loading");
+        loadBar.classList.add("hidden");
     }
 });

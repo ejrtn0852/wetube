@@ -6,9 +6,12 @@
         width: 100%;
     }
 }
+.hidden {
+    display: none;
+}
 
-#load {
-    // animation: loadingBar 5s ease-in-out;
+.loading {
+    animation: loadingBar 1s ease-in-out infinite;
     display: block;
     height: 0.5%;
     width: 100vw;
