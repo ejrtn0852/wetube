@@ -13,11 +13,11 @@ let controlsTimeout = null;
 let controlsMovementTimeout = null;
 let volumeValue = 0.5;
 
-const handlePlayClick = async () => {
+const handlePlayClick = () => {
     if (video.paused) {
-        await video.play();
+        video.play();
     } else {
-        await video.pause();
+        video.pause();
     }
 };
 
