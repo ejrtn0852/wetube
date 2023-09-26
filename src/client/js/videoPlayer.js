@@ -1,4 +1,4 @@
-const video = document.querySelector("video");
+const video = document.getElementById("watchVideo");
 const playBtn = document.getElementById("play");
 const muteBtn = document.getElementById("mute");
 const volumeRange = document.getElementById("volume");
@@ -14,11 +14,11 @@ let controlsMovementTimeout = null;
 let volumeValue = 0.5;
 
 video.volume = volumeValue;
-const handlePlayClick = async () => {
-    if (video.pause) {
-        await video.play();
+const handlePlayClick = () => {
+    if (video.paused) {
+        video.play();
     } else {
-        await video.pause();
+        video.pause();
     }
     video.paused ? (playBtn.innerText = "play") : (playBtn.innerText = "Pause");
 };

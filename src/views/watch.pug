@@ -2,7 +2,7 @@ extends base.pug
 
 block content 
     div#videoContainer(data-id=video._id)
-        video(src="/" + video.fileUrl)
+        video(src="/" + video.fileUrl)#watchVideo
         div#videoControls 
             button#play Play 
             button#mute Mute
@@ -27,9 +27,19 @@ block content
     if loggedInUser && (String(loggedInUser._id) === String(video.owner._id))
         a(href=`${video.id}/edit`) Edit Video &larr;
         <br>
-        a(href=`${video.id}/delete`) Delete Video &larr;     
-
+        a(href=`${video.id}/delete`) Delete Video &larr;  
+    if loggedIn
+    div.video__add-comments
+        form.video__comment-form#commentForm
+            textarea(cols="30",rows="10" placeholder="Add a public comment")
+            button Add Comment
+    div.video__comments
+        ul 
+            each comment in video.comments.reverse()
+                li.video__comment=comment.text
 block scripts 
-    script(src="/static/js/loading.js")
-    script( src="/static/js/videoPlayer.js") 
     script( async src="https://kit.fontawesome.com/f2e0cef0ae.js" crossorigin="anonymous")
+    script(src="/static/js/loading.js")
+    script(src="/static/js/videoPlayer.js") 
+    if loggedIn
+        script(src="/static/js/commentSection.js")
