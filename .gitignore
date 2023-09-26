@@ -4,3 +4,4 @@ src/node_modules/
 /uploads
 .DS_Store
 /assets
+.vscode/extensions.json

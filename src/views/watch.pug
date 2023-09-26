@@ -38,7 +38,7 @@ block content
                         i.fas.fa-comment 
                         span #{comment.text}
                     if String(loggedInUser._id) === String(comment.owner._id)
-                        span ❌
+                        span#deleteBtn ❌
 block scripts 
     script(async src="https://kit.fontawesome.com/f2e0cef0ae.js" crossorigin="anonymous")
     script(src="/static/js/loading.js")
