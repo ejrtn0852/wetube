@@ -8,16 +8,19 @@ const timeline = document.getElementById("timeline");
 const $fullScreen = document.getElementById("fullScreen");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
-
+const playI = document.querySelector("#play i");
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
 let volumeValue = 0.5;
 
 const handlePlayClick = () => {
     if (video.paused) {
+        playI.classList.remove("fa-solid", "fa-play", "fa-lg");
         video.play();
+        playI.classList.add("fa-solid", "fa-pause");
     } else {
         video.pause();
+        playI.classList.add("fa-solid", "fa-play", "fa-lg");
     }
 };
 
@@ -62,10 +65,8 @@ const handleFullScreen = () => {
     const fullScreen = document.fullscreenElement;
     if (fullScreen) {
         document.exitFullscreen();
-        $fullScreen.innerText = "Enter Full Screen";
     } else {
         videoContainer.requestFullscreen();
-        $fullScreen.innerText = "Exit Full Screen";
     }
 };
 

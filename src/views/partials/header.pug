@@ -18,13 +18,11 @@ header
                 li                          
                     a(href="video/upload") Upload Video    
                 li 
-                    a(href="users/edit") Edit-Profile 
-                li 
-                    a(href=`/users/${loggedInUser._id}`) My Profile   
+                    a(href="users/edit") Edit-Profile   
                 li 
                     a(href="users/logout") logout
                 li 
-                    a(href="/my-profile") #{loggedInUser.name}의 Profile 
+                    a(href=`/users/${loggedInUser._id}`) #{loggedInUser.name}의 Profile 
             else      
                 li 
                     a(href="/join") Join Now 

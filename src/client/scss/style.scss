@@ -1,8 +1,10 @@
 // config
 @import "./config/_variabless.scss";
-@import "./config/_reset";
+@import "./config/_reset.scss";
 // components
 @import "./components/header.scss";
+@import "./components/watch.scss";
+
 a {
     color: inherit;
     text-decoration: none;

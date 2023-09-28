@@ -1,0 +1,108 @@
+#videoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#videoControls {
+    height: 450px;
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    position: absolute;
+    width: inherit;
+}
+
+#play {
+    background-color: transparent;
+    border: none;
+    background-color: none;
+    color: $white;
+}
+#mute {
+    background-color: transparent;
+    border: none;
+    color: $white;
+}
+#volume {
+    width: 50px;
+    background-color: white;
+}
+input[type="range"] {
+    accent-color: white;
+}
+
+#timeline {
+    width: 350px;
+}
+
+#fullScreen {
+    background-color: transparent;
+    border: none;
+    width: 30px;
+    color: $white;
+}
+
+.video-info {
+    width: 100%;
+    margin: 20px;
+    height: 130px;
+    background-color: #272727;
+    border: none;
+}
+
+.showing {
+    display: none;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    padding: 10px;
+}
+
+.info {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+
+.description {
+    display: flex;
+    padding: 10px;
+}
+.logged-in-user {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.video__add-comments {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes borderBar {
+    0% {
+        border-bottom-width: 0px;
+    }
+    100% {
+        border-bottom-width: 1px;
+    }
+}
+
+.video__comment-form > textarea {
+    width: 400px;
+    height: 50px;
+    border: 1px solid rgba($color: #000000, $alpha: 0.1);
+    background-color: transparent;
+    outline: none;
+    border-bottom: 1px solid gray;
+    animation: borderBar 1s ease-in-out;
+}
+
+.video__comment-form > textarea:focus {
+    border-bottom: 1px solid white;
+}
