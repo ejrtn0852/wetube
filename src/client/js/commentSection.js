@@ -4,20 +4,26 @@ const deleteBtn = document.getElementById("deleteBtn");
 const commentContainer = document.querySelector(".video__comment");
 const commentBox = document.querySelector("textarea");
 
-const addComment = (text, id) => {
+const addComment = (text, id, username) => {
     const videoComments = document.querySelector(".video__comments ul");
     const newComment = document.createElement("li");
     newComment.dataset.id = id;
     newComment.className = "video__comment";
-    const icon = document.createElement("i");
-    icon.className = "fas fa-comment";
-    const span = document.createElement("span");
-    span.innerText = ` ${text}`;
+    const idDeleteDiv = document.createElement("div");
+    idDeleteDiv.className = "id-Delete_box";
+    const span0 = document.createElement("span");
+    span0.innerText = `${username}`;
+    const span1 = document.createElement("span");
+    span1.innerText = "❌";
+    idDeleteDiv.appendChild(span0);
+    idDeleteDiv.appendChild(span1);
+    const div = document.createElement("div");
+    div.className = "comment-text";
     const span2 = document.createElement("span");
-    span2.innerText = "❌";
-    newComment.appendChild(icon);
-    newComment.appendChild(span);
-    newComment.appendChild(span2);
+    span2.innerText = ` ${text}`;
+    div.appendChild(span2);
+    newComment.appendChild(idDeleteDiv);
+    newComment.appendChild(div);
     videoComments.prepend(newComment);
 };
 
@@ -39,24 +45,26 @@ const handleSubmit = async (event) => {
     });
     if (response.status === 201) {
         textarea.value = "";
-        const { newCommentId } = await response.json();
-        addComment(text, newCommentId);
-    } else {
+        const { newCommentId, username } = await response.json();
+        addComment(text, newCommentId, username);
     }
 };
 
 const handleDelete = async (id) => {
     const { id: commentId } = commentContainer.dataset;
     const { id: videoId } = videoContainer.dataset;
-    const response = await fetch(
-        `/api/videos/${videoId}/comment/${commentId}/remove`,
-        {
-            method: "DELETE",
-        }
-    );
-    if (response.status === 201) {
+    console.log(videoId);
+    const response = await fetch(`/api/videos/${videoId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ commentId }),
+    });
+    if (response.status === 302) {
         commentContainer.remove();
         deleteBtn.remove();
+        // location.re;
     }
 };
 

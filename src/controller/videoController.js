@@ -148,29 +148,38 @@ export const createComment = async (req, res) => {
         body: { text },
         params: { id },
     } = req;
+    console.log(user);
     const video = await Video.findById(id);
     if (!video) {
         return res.sendStatus(404);
     }
     if (user) {
         const comment = await Comment.create({
+            username: user.username,
             text,
             owner: user._id,
             video: id,
         });
         video.comments.push(comment._id);
         video.save();
-        return res.status(201).json({ newCommentId: comment._id });
+        return res
+            .status(201)
+            .json({ newCommentId: comment._id, username: comment.username });
     }
 };
 
 export const removeComment = async (req, res) => {
-    const { commentId, videoId } = req.params;
+    const {
+        params: { id },
+        body: { commentId },
+    } = req;
+    console.log(id);
     const commentResult = await Comment.findByIdAndDelete(commentId);
-    const videoResult = await Video.findByIdAndUpdate(videoId, {
+    const videoResult = await Video.findByIdAndUpdate(id, {
         $pull: { comments: commentId },
     });
-    return res.sendStatus(201);
+    console.log(videoResult);
+    return res.redirect("/");
 };
 
 export const commentError = (req, res) => {

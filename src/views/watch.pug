@@ -40,10 +40,12 @@ block content
         ul 
             each comment in video.comments.reverse()
                 li.video__comment(data-id=comment._id)
-                    i.fas.fa-comment 
-                    span #{comment.text}
-                if String(loggedInUser._id) === String(comment.owner._id)
-                    span#deleteBtn ❌
+                    div.id-Delete_box 
+                        span #{comment.username}
+                        if String(loggedInUser._id) === String(comment.owner._id)
+                            span#deleteBtn ✖️
+                    div.comment-text    
+                        span #{comment.text}
 block scripts 
     script(async src="https://kit.fontawesome.com/f2e0cef0ae.js" crossorigin="anonymous")
     script(src="/static/js/loading.js")
