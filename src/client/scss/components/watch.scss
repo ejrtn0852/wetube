@@ -1,58 +1,37 @@
-#videoContainer {
+.videoContainer {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    .videoControls {
+        width: 100%;
+        display: flex;
+        background-color: white;
+        .videoControls__playBtn {
+            background-color: transparent;
+            border: none;
+        }
+        .videoControls__MuteBtn {
+            background-color: transparent;
+            border: none;
+        }
+        .videoControls__volume {
+            width: 60px;
+        }
+        .timeline {
+            width: 100px;
+        }
+    }
 }
-
-#videoControls {
-    height: 450px;
-    display: flex;
-    align-items: flex-end;
-    gap: 5px;
-    position: absolute;
-    width: inherit;
+.dis-non {
+    display: none;
 }
-
-#play {
-    background-color: transparent;
-    border: none;
-    background-color: none;
-    color: $white;
-}
-#mute {
-    background-color: transparent;
-    border: none;
-    color: $white;
-}
-#volume {
-    width: 50px;
-    background-color: white;
-}
-input[type="range"] {
-    accent-color: white;
-}
-
-#timeline {
-    width: 350px;
-}
-
-#fullScreen {
-    background-color: transparent;
-    border: none;
-    width: 30px;
-    color: $white;
-}
-
 .video-info {
     width: 100%;
     margin: 20px;
     height: 130px;
     background-color: #272727;
     border: none;
-}
-
-.showing {
-    display: none;
 }
 
 .title {
@@ -146,8 +125,8 @@ input[type="range"] {
 .comment-text {
     display: flex;
 }
-
-#watchVideo:fullscreen {
+#videoContainer:fullscreen {
     width: 100%;
     height: 100%;
+    background-color: black;
 }

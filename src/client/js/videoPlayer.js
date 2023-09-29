@@ -9,6 +9,7 @@ const $fullScreen = document.getElementById("fullScreen");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
 const playI = document.querySelector("#play i");
+const muteI = document.querySelector("#mute i");
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
 let volumeValue = 0.5;
@@ -26,11 +27,17 @@ const handlePlayClick = () => {
 
 const handleMute = (e) => {
     if (video.muted) {
+        muteI.classList.remove("fa-solid", "fa-volume-off", "fa-lg");
         video.muted = false;
         volumeRange.value = 0;
+        muteI.classList.add("fa-solid", "fa-volume-xmark", "fa-lg");
+        volumeRange.classList.add("dis-non");
     } else {
+        muteI.classList.remove("fa-solid", "fa-volume-xmark", "fa-lg");
         video.muted = true;
         volumeRange.value = volumeValue;
+        muteI.classList.add("fa-solid", "fa-volume-off", "fa-lg");
+        volumeRange.classList.remove("dis-non");
     }
 };
 
@@ -48,7 +55,7 @@ const formatTime = (seconds) =>
 
 const handleLoadedMetadata = () => {
     totalTime.innerText = formatTime(Math.floor(video.duration));
-    timeline.max = video.duration;
+    timeline.max = Math.floor(video.duration);
 };
 
 const handleTimeUpdate = () => {
