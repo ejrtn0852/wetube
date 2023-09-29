@@ -101,6 +101,7 @@ input[type="range"] {
     outline: none;
     border-bottom: 1px solid gray;
     animation: borderBar 1s ease-in-out;
+    color: white;
 }
 
 .video__comment-form > textarea:focus {

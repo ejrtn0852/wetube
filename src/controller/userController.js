@@ -162,34 +162,18 @@ export const postEdit = async (req, res) => {
     } = req;
     console.log(file);
     console.log(avatarUrl);
-    // const dbSearchId = await User.find(
-    //     {
-    //         _id: { $ne: _id },
-    //     },
-    //     "email"
-    // );
-    // 현재 로그인한 id값과 다른 id값을 찾아옴
-    // const emailList = dbSearchId.map((item) => item.email);
-    // input으로 입력한 사용자 이메일과 db에 저장된 이메일이 같다면 status400 + redirect하려고 했는데 몽고 자체에서 막아줌
-    // 그래서 원래 자기가 가지고 있던 값을 중복으로 변경하려할때만 막아줌
-    // 생각해보니 스키마에 unquie 처리가 되어있으면 컬렉션안에 고유 값이 되어서 이 값이 중복으로 들어오게되면 mongo에서 막아주는거임
 
     try {
-        if (sessionEmail !== email && sessionName !== name) {
-            const updateUser = await User.findByIdAndUpdate(
-                _id,
-                {
-                    avatarUrl: file ? file.path : avatarUrl,
-                    name,
-                    email,
-                    username,
-                    location,
-                },
-                { new: true }
-            );
-            req.session.user = updateUser;
-            return res.redirect("/");
-        }
+        const updateUser = await User.findByIdAndUpdate(
+            _id,
+            {
+                avatarUrl: file ? file.path : avatarUrl,
+                location,
+            },
+            { new: true }
+        );
+        req.session.user = updateUser;
+        return res.redirect("/");
     } catch (error) {
         console.log(error);
         return res.status(400).render("edit-profile", {
