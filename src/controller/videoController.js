@@ -178,8 +178,7 @@ export const removeComment = async (req, res) => {
     const videoResult = await Video.findByIdAndUpdate(id, {
         $pull: { comments: commentId },
     });
-    console.log(videoResult);
-    return res.redirect("/");
+    return res.sendStatus(302);
 };
 
 export const commentError = (req, res) => {

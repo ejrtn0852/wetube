@@ -66,7 +66,7 @@ const handleFullScreen = () => {
     if (fullScreen) {
         document.exitFullscreen();
     } else {
-        videoContainer.requestFullscreen();
+        videoContainer.requestFullscreen({ navigationUI: "show" });
     }
 };
 

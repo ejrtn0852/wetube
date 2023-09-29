@@ -50,7 +50,7 @@ const handleSubmit = async (event) => {
     }
 };
 
-const handleDelete = async (id) => {
+const handleDelete = async () => {
     const { id: commentId } = commentContainer.dataset;
     const { id: videoId } = videoContainer.dataset;
     console.log(videoId);
@@ -64,7 +64,7 @@ const handleDelete = async (id) => {
     if (response.status === 302) {
         commentContainer.remove();
         deleteBtn.remove();
-        // location.re;
+        location.reload();
     }
 };
 
