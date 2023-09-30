@@ -86,7 +86,7 @@ const handleStart = () => {
 
 const init = async () => {
     stream = await navigator.mediaDevices.getUserMedia({
-        audio: false,
+        audio: true,
         video: true,
     });
     video.srcObject = stream;
@@ -95,6 +95,7 @@ const init = async () => {
     loadBar.classList.remove("loading");
     loadBar.classList.add("hidden");
 };
+init();
 
 document.addEventListener("DOMContentLoaded", init);
 actionBtn.addEventListener("click", handleStart);
