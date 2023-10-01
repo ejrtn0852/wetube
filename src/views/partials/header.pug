@@ -22,7 +22,9 @@ header
                 li 
                     a(href="users/logout") logout
                 li 
-                    a(href=`/users/${loggedInUser._id}`) #{loggedInUser.name}의 Profile       
+                    a(href=`/users/${loggedInUser._id}`) #{loggedInUser.name}의 Profile    
+                li 
+                    a(href="/users/kakao/logout") kakaoLogOut    
             else    
                 li 
                     a(href="/join") Join Now 

@@ -203,6 +203,7 @@ export const finishKakaoLogin = async (req, res) => {
         req.session.user = user;
         req.session.kakao = true;
         req.session.userID = userData.id;
+        req.session.token = access_token;
         return res.redirect("/");
     } else {
         return res.redirect("/login");
@@ -310,23 +311,9 @@ export const kakaoLogOut = async (req, res) => {
     const logoutToken = await fetch(`${finalUrl}/v1/user/logout`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Bearer ${req.session.token}`,
         },
     });
-    if ("access_token" in logoutToken) {
-        console.log("access_token" + "있음");
-    }
-    if ("access_token" in logoutToken) {
-        const { access_token } = logoutToken;
-        const logout = await fetch(`${finalUrl}/v1/user/logout`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                Authorization: `Bearer ${access_token}`,
-            },
-        });
-        const data = await logout.json();
-        console.log(data);
-        return res.redirect("/");
-    }
+    console.log(logoutToken);
+    return res.redirect("/");
 };
