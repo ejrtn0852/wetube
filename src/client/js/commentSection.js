@@ -47,6 +47,7 @@ const handleSubmit = async (event) => {
         textarea.value = "";
         const { newCommentId, username } = await response.json();
         addComment(text, newCommentId, username);
+        window.location.assign(`/video/${videoId}`);
     }
 };
 
@@ -54,13 +55,15 @@ const handleDelete = async () => {
     const { id: commentId } = commentContainer.dataset;
     const { id: videoId } = videoContainer.dataset;
     console.log(videoId);
-    const response = await fetch(`/api/videos/${videoId}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ commentId }),
-    });
+    const response = await fetch(
+        `/api/videos/${videoId}/comment/${commentId}`,
+        {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    );
     if (response.status === 302) {
         commentContainer.remove();
         deleteBtn.remove();

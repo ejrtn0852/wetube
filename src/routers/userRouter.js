@@ -9,6 +9,9 @@ import {
     postEdit,
     getChangePassword,
     postChangePassword,
+    startKakaoLogin,
+    finishKakaoLogin,
+    kakaoLogOut,
 } from "../controller/userController";
 
 import {
@@ -27,11 +30,14 @@ userRouter
     .post(avatarUpload.single("avatar"), postEdit);
 userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
 userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
+userRouter.get("/kakao/start", publicOnlyMiddleware, startKakaoLogin);
+userRouter.get("/kakao/finish", publicOnlyMiddleware, finishKakaoLogin);
 userRouter
     .route("/change-password")
     .all(protectorMiddleware)
     .get(getChangePassword)
     .post(postChangePassword);
+userRouter.get("/kakao/logout", kakaoLogOut);
 
 userRouter.get("/:id", see);
 

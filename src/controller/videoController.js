@@ -170,12 +170,10 @@ export const createComment = async (req, res) => {
 
 export const removeComment = async (req, res) => {
     const {
-        params: { id },
-        body: { commentId },
+        params: { videoId, commentId },
     } = req;
-    console.log(id);
     const commentResult = await Comment.findByIdAndDelete(commentId);
-    const videoResult = await Video.findByIdAndUpdate(id, {
+    const videoResult = await Video.findByIdAndUpdate(videoId, {
         $pull: { comments: commentId },
     });
     return res.sendStatus(302);

@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     fileUrl: { type: String },
     socialOnly: { type: Boolean, default: false },
     avatarUrl: String,
-    username: { type: String, required: true, unique: true },
+    username: { type: String, unique: true },
     password: { type: String },
     name: { type: String, required: true, unique: true },
     location: String,

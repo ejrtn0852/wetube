@@ -4,6 +4,8 @@ import bcrypt from "bcrypt";
 import Video from "../models/Video";
 import multer from "multer";
 import { Resolver } from "webpack";
+import { application, json } from "express";
+import { token } from "morgan";
 
 export const getJoin = (req, res) => {
     console.log(req.body);
@@ -143,6 +145,70 @@ export const finishGithubLogin = async (req, res) => {
     }
 };
 
+export const startKakaoLogin = (req, res) => {
+    const baseURL = "https://kauth.kakao.com/oauth/authorize";
+    const config = {
+        response_type: "code",
+        client_id: process.env.KaKo_ClIENT,
+        redirect_uri: "http://localhost:4000/users/kakao/finish",
+        scope: "account_email profile_nickname profile_image ",
+    };
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${baseURL}?${params}`;
+    return res.redirect(finalUrl);
+};
+
+export const finishKakaoLogin = async (req, res) => {
+    const baseURL = "https://kauth.kakao.com/oauth/token";
+    const config = {
+        client_id: process.env.KaKo_ClIENT,
+        client_secret: process.env.KA_SECRET,
+        grant_type: "authorization_code",
+        redirect_uri: "http://localhost:4000/users/kakao/finish",
+        code: req.query.code,
+    };
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${baseURL}?${params}`;
+    const tokenRequest = await (
+        await fetch(finalUrl, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json",
+            },
+        })
+    ).json();
+    if ("access_token" in tokenRequest) {
+        const { access_token } = tokenRequest;
+        const apiUrl = "https://kapi.kakao.com";
+        const userData = await (
+            await fetch(`${apiUrl}/v2/user/me`, {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                },
+            })
+        ).json();
+        const {
+            properties: { nickname, profile_image },
+            kakao_account: { email },
+        } = userData;
+        let user = await User.findOne({ email });
+        if (!user) {
+            user = await User.create({
+                avatarUrl: profile_image,
+                name: nickname,
+                email: email,
+            });
+        }
+        req.session.loggedIn = true;
+        req.session.user = user;
+        req.session.kakao = true;
+        req.session.userID = userData.id;
+        return res.redirect("/");
+    } else {
+        return res.redirect("/login");
+    }
+};
+
 export const logout = (req, res) => {
     req.session.destroy();
     return res.redirect("/");
@@ -177,8 +243,7 @@ export const postEdit = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(400).render("edit-profile", {
-            errorMessage:
-                "이미 등록된 이메일/닉네임 입니다. 다시 입력해주세요. 아직 서비스 미구현으로 이름과 이메일을 무조건 바꿔주셔야합니다.",
+            errorMessage: "비정상 접근",
             avatarError: error,
         });
     }
@@ -232,4 +297,36 @@ export const see = async (req, res) => {
         pageTitle: user.name,
         user,
     });
+};
+
+export const kakaoLogOut = async (req, res) => {
+    const baseURL = "https://kauth.kakao.com";
+    const logOutConfig = {
+        client_id: process.env.KaKo_ClIENT,
+        logout_redirect_uri: "http://localhost:4000/users/kakao/logout",
+    };
+    const logOutParams = new URLSearchParams(logOutConfig).toString();
+    const finalUrl = `${baseURL}?${logOutParams}`;
+    const logoutToken = await fetch(`${finalUrl}/v1/user/logout`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+    });
+    if ("access_token" in logoutToken) {
+        console.log("access_token" + "있음");
+    }
+    if ("access_token" in logoutToken) {
+        const { access_token } = logoutToken;
+        const logout = await fetch(`${finalUrl}/v1/user/logout`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                Authorization: `Bearer ${access_token}`,
+            },
+        });
+        const data = await logout.json();
+        console.log(data);
+        return res.redirect("/");
+    }
 };
